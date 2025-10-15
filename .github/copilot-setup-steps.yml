@@ -1,0 +1,214 @@
+# GitHub Copilot Setup Steps Configuration
+# This file defines the setup and configuration steps for GitHub Copilot in this Python project
+
+name: GitHub Copilot Setup Steps
+description: Setup and configuration steps for GitHub Copilot integration with agentic-ghc-demo-00
+
+# Prerequisites
+prerequisites:
+  - name: Python Version
+    description: Python 3.8 or higher is required for this project
+    check: python --version
+    expectedOutput: "Python 3.8+"
+    
+  - name: pip Package Manager
+    description: pip should be installed and available
+    check: pip --version
+    
+  - name: GitHub Copilot Extension
+    description: GitHub Copilot extension should be installed in your IDE
+    instructions: Install GitHub Copilot from your IDE's extension marketplace
+
+# Setup Steps
+steps:
+  - name: Clone Repository
+    description: Clone the repository to your local machine
+    commands:
+      - git clone https://github.com/mc5eamus/agentic-ghc-demo-00.git
+      - cd agentic-ghc-demo-00
+    
+  - name: Create Virtual Environment
+    description: Create and activate a Python virtual environment for isolated dependency management
+    commands:
+      - python -m venv venv
+    activationCommands:
+      linux: source venv/bin/activate
+      windows: venv\Scripts\activate
+    note: Virtual environments ensure project dependencies don't conflict with system packages
+    
+  - name: Install Dependencies
+    description: Install project dependencies from requirements.txt
+    commands:
+      - pip install -r requirements.txt
+    dependencies:
+      - pytest>=7.0.0
+      - black>=22.0.0
+      - flake8>=4.0.0
+    
+  - name: Verify Installation
+    description: Verify that all tools are properly installed
+    commands:
+      - pytest --version
+      - black --version
+      - flake8 --version
+
+# Project-Specific Copilot Configuration
+copilotConfiguration:
+  language: python
+  pythonVersion: "3.8+"
+  
+  # Code Style Settings
+  codeStyle:
+    standard: PEP 8
+    lineLength: 100
+    formatter: black
+    linter: flake8
+    
+  # Type Hints
+  typeHints:
+    enabled: true
+    enforced: true
+    description: Always include type hints for function parameters and return values
+    
+  # Documentation
+  documentation:
+    style: Google
+    required:
+      - moduleDocstrings: true
+      - functionDocstrings: true
+      - classDocstrings: true
+      - complexLogicComments: true
+    
+  # Testing
+  testing:
+    framework: pytest
+    testDirectory: tests/
+    coverage:
+      enabled: true
+      target: high
+    testNaming: "test_*"
+    
+  # Best Practices
+  bestPractices:
+    - Follow Single Responsibility Principle
+    - Use DRY (Don't Repeat Yourself)
+    - Implement proper error handling
+    - Validate inputs
+    - Avoid magic numbers
+    - Never commit credentials or secrets
+
+# Code Quality Tools Integration
+codeQualityTools:
+  - name: Black Formatter
+    description: Automatic code formatting to maintain consistent style
+    usage: black src/
+    runBefore: commit
+    
+  - name: Flake8 Linter
+    description: Check code for style and quality issues
+    usage: flake8 src/
+    runBefore: commit
+    
+  - name: pytest
+    description: Run unit tests to ensure code correctness
+    usage: python -m pytest tests/
+    runBefore: commit
+
+# Workspace Preparation
+workspaceSetup:
+  directories:
+    - src/     # Source code directory
+    - tests/   # Test files directory
+    
+  importantFiles:
+    - README.md                          # Project documentation
+    - requirements.txt                   # Python dependencies
+    - .github/copilot-instructions.md    # Copilot coding standards
+    
+  contextFiles:
+    description: Keep these files open for better Copilot suggestions
+    files:
+      - src/__init__.py
+      - src/main.py
+      - tests/test_main.py
+
+# Copilot Usage Guidelines
+copilotUsageGuidelines:
+  - guideline: Write clear, descriptive comments
+    description: Describe what you want to achieve, and Copilot will suggest implementations
+    example: "# Function to calculate fibonacci sequence up to n terms"
+    
+  - guideline: Use type hints
+    description: Type hints help Copilot provide better suggestions
+    example: "def greet(name: str) -> str:"
+    
+  - guideline: Follow Python conventions
+    tips:
+      - Use PEP 8 style guidelines
+      - Write docstrings for functions and classes
+      - Use meaningful variable names
+      
+  - guideline: Use Copilot Chat commands
+    commands:
+      - /explain  # Ask Copilot to explain code
+      - /tests    # Request test generation
+      - /fix      # Fix issues in code
+    
+  - guideline: Provide context
+    description: Keep related files open to give Copilot better context for suggestions
+
+# Development Workflow
+developmentWorkflow:
+  - step: Write code with Copilot assistance
+    description: Use descriptive comments and let Copilot suggest implementations
+    
+  - step: Format code
+    command: black src/
+    
+  - step: Lint code
+    command: flake8 src/
+    
+  - step: Run tests
+    command: python -m pytest tests/
+    
+  - step: Review changes
+    description: Review all Copilot suggestions before accepting
+    
+  - step: Commit changes
+    description: Use clear, descriptive commit messages
+
+# Additional Setup for AI Foundry Integration
+aiFoundryIntegration:
+  description: Configuration for Azure AI Foundry integration (if applicable)
+  notes:
+    - Ensure API credentials are stored securely in environment variables
+    - Never commit API keys or secrets to the repository
+    - Follow security best practices for AI service integration
+    
+# Troubleshooting
+troubleshooting:
+  - issue: Import errors when running code
+    solution: Ensure virtual environment is activated and dependencies are installed
+    
+  - issue: Black or flake8 not found
+    solution: Run 'pip install -r requirements.txt' to install all dependencies
+    
+  - issue: Tests not running
+    solution: Ensure pytest is installed and you're in the project root directory
+    
+  - issue: Copilot not providing good suggestions
+    solution: Ensure related files are open, write clear comments, use type hints
+
+# Quick Reference
+quickReference:
+  activateVenv:
+    linux: source venv/bin/activate
+    windows: venv\Scripts\activate
+  runTests: python -m pytest tests/
+  formatCode: black src/
+  lintCode: flake8 src/
+  runApp: python src/main.py
+
+# Version
+version: 1.0.0
+lastUpdated: 2025-10-15
